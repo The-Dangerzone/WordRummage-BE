@@ -13,13 +13,11 @@ const PORT = process.env.PORT || 3001;
 
 app.get('/', (request, response) => {
     response.send('Home Page!');
-    }
-);
+});
 
 app.get('*', (request, response) => {
-    throw new Error('oh nooooo!');
-    }
-);
+    response.status(404).send('Page not found');
+});
 
 app.listen(PORT, () => console.log(`Server up on port ${PORT}`));
 
