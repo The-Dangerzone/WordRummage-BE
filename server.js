@@ -25,8 +25,8 @@ db.once('open', function () {
   console.log('Mongoose is connected');
 });
 
-app.use(verifyUser);
-app.post('/user', postUser);
+// app.use(verifyUser);
+app.post('/user', verifyUser, postUser);
 app.put('/user/:id', putUser);
 
 app.get('/', (request, response) => {
@@ -38,10 +38,16 @@ async function putUser(request, response, next) {
     let id = request.params.id;
     let data = request.body;
     let options = { new: true, overwrite: true };
-
-    const updateUser = await User.findByIdAndUpdate(id, data, options);
-
-    response.status(200).send(updateUser);
+    let displayName = data.displayName;
+    const foundUser = await User.find({ displayName });
+    if(foundUser.length){
+      //return error and make them choose another name
+      console.log('NOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+    } else {
+      const updateUser = await User.findByIdAndUpdate(id, data, options);
+  
+      response.status(200).send(updateUser);
+    }
   } catch (error) {
     next(error);
   }
