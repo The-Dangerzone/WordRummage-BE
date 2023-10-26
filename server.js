@@ -27,10 +27,25 @@ db.once('open', function () {
 
 app.use(verifyUser);
 app.post('/user', postUser);
+app.put('/user/:id', putUser);
 
 app.get('/', (request, response) => {
   response.send('Home Page!');
 });
+
+async function putUser(request, response, next) {
+  try {
+    let id = request.params.id;
+    let data = request.body;
+    let options = { new: true, overwrite: true };
+
+    const updateUser = await User.findByIdAndUpdate(id, data, options);
+
+    response.status(200).send(updateUser);
+  } catch (error) {
+    next(error);
+  }
+}
 
 async function postUser(request, response, next) {
   try {
