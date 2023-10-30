@@ -37,7 +37,7 @@ async function putUser(request, response, next) {
   try {
     let id = request.params.id;
     let data = request.body;
-    let options = { new: true, overwrite: true };
+    let options = { new: true };
     let displayName = data.displayName;
     const foundUser = await User.find({ displayName });
     if(foundUser.length){
