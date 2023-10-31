@@ -42,10 +42,11 @@ async function putUser(request, response, next) {
     const foundUser = await User.find({ displayName });
     if(foundUser.length){
       //return error and make them choose another name
-      console.log('NOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+      console.log('NOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
+      response.status(420).send('duplicate displayname');
     } else {
       const updateUser = await User.findByIdAndUpdate(id, data, options);
-  
+
       response.status(200).send(updateUser);
     }
   } catch (error) {
@@ -62,7 +63,7 @@ async function postUser(request, response, next) {
     if (foundUser.length) {
       response.status(200).send(foundUser[0]);
     } else {
-      let createdUser = await User.create({...request.body, email: request.user.email});
+      let createdUser = await User.create({ ...request.body, email: request.user.email });
       response.status(200).send(createdUser);
     }
   } catch (error) {
