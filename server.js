@@ -27,27 +27,44 @@ db.once('open', function () {
 
 // app.use(verifyUser);
 app.post('/user', verifyUser, postUser);
-app.put('/user/:id', putUser);
+app.put('/user/:id', updateDisplayName);
+app.put('/stats/:id', updateUserStats)
 
 app.get('/', (request, response) => {
   response.send('Home Page!');
 });
 
-async function putUser(request, response, next) {
+async function updateDisplayName(request, response, next) {
   try {
     let id = request.params.id;
     let data = request.body;
-    let options = { new: true, overwrite: true };
-    let displayName = data.displayName;
-    const foundUser = await User.find({ displayName });
-    if(foundUser.length){
+    let options = { new: true };
+    let nameCheck = data.displayName.toLowerCase();
+    const foundUser = await User.find({ nameCheck });
+    if (foundUser.length) {
       //return error and make them choose another name
-      console.log('NOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+      console.log('NOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
+      response.status(420).send('duplicate displayname');
     } else {
       const updateUser = await User.findByIdAndUpdate(id, data, options);
-  
+
       response.status(200).send(updateUser);
     }
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function updateUserStats(request, response, next) {
+  try {
+    let id = request.params.id;
+    let data = request.body;
+    let options = { new: true };
+
+    const updateUser = await User.findByIdAndUpdate(id, data, options);
+
+    response.status(200).send(updateUser);
+
   } catch (error) {
     next(error);
   }
@@ -62,7 +79,7 @@ async function postUser(request, response, next) {
     if (foundUser.length) {
       response.status(200).send(foundUser[0]);
     } else {
-      let createdUser = await User.create({...request.body, email: request.user.email});
+      let createdUser = await User.create({ ...request.body, email: request.user.email });
       response.status(200).send(createdUser);
     }
   } catch (error) {
