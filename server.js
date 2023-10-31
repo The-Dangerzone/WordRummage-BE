@@ -38,8 +38,8 @@ async function putUser(request, response, next) {
     let id = request.params.id;
     let data = request.body;
     let options = { new: true };
-    let displayName = data.displayName;
-    const foundUser = await User.find({ displayName });
+    let nameCheck = data.displayName.toLowerCase();
+    const foundUser = await User.find({ nameCheck });
     if(foundUser.length){
       //return error and make them choose another name
       console.log('NOOOOOOOOOOOOOOOOOOOOOOOOOOOO');

@@ -10,6 +10,7 @@ const userSchema = new Schema({
   highScore: { type: Number, default: 0 },
   accuracy: { type: Number, default: 0 },
   gamesPlayed: { type: Number, default: 0 },
+  nameCheck: { type: String, required: false },
 });
 
 userSchema.plugin(beautifyUnique);
