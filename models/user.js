@@ -14,7 +14,9 @@ const userSchema = new Schema({
     percentage: { type: Number, default: 0 },
   },
   gamesPlayed: { type: Number, default: 0 },
+  maxStreak: { type: Number, default: 0 },
   nameCheck: { type: String, required: false },
+
 });
 
 userSchema.plugin(beautifyUnique);
