@@ -28,11 +28,22 @@ db.once('open', function () {
 // app.use(verifyUser);
 app.post('/user', verifyUser, postUser);
 app.put('/user/:id', updateDisplayName);
-app.put('/stats/:id', updateUserStats)
+app.put('/stats/:id', updateUserStats);
+app.get('/leaderboard', getLeaderboard);
 
 app.get('/', (request, response) => {
   response.send('Home Page!');
 });
+
+async function getLeaderboard(request, response, next) {
+  try {
+    // limit will set how many users are returned
+    let leaderboard = await User.find().sort({highScore:-1}).limit(10);
+    response.status(200).send(leaderboard);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 async function updateDisplayName(request, response, next) {
   try {
@@ -43,7 +54,6 @@ async function updateDisplayName(request, response, next) {
     const foundUser = await User.find({ nameCheck });
     if (foundUser.length) {
       //return error and make them choose another name
-      console.log('NOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
       response.status(420).send('duplicate displayname');
     } else {
       const updateUser = await User.findByIdAndUpdate(id, data, options);
