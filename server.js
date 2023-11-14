@@ -37,9 +37,11 @@ app.get('/', (request, response) => {
 
 async function getLeaderboard(request, response, next) {
   try {
+    let data = {};
     // limit will set how many users are returned
-    let leaderboard = await User.find().sort({highScore:-1}).limit(10);
-    response.status(200).send(leaderboard);
+    data.normalLeaderboard = await User.find().sort({ "normalMode.highScore" :-1}).limit(10);
+    data.insaneLeaderboard = await User.find().sort({ "insaneMode.highScore" :-1}).limit(10);
+    response.status(200).send(data);
   } catch (error) {
     console.log(error);
   }
@@ -71,7 +73,9 @@ async function updateUserStats(request, response, next) {
     let data = request.body;
     let options = { new: true };
     // update accuracy percentage
-    data.accuracy.percentage = Math.floor((data.accuracy.correct / (data.accuracy.correct + data.accuracy.incorrect)) * 100);
+    data.normalMode.accuracy.percentage = Math.floor((data.normalMode.accuracy.correct / (data.normalMode.accuracy.correct + data.normalMode.accuracy.incorrect)) * 100);
+
+    data.insaneMode.accuracy.percentage = Math.floor((data.insaneMode.accuracy.correct / (data.insaneMode.accuracy.correct + data.insaneMode.accuracy.incorrect)) * 100);
 
     const updateUser = await User.findByIdAndUpdate(id, data, options);
 
