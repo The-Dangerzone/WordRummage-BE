@@ -71,7 +71,7 @@ async function updateUserStats(request, response, next) {
     let data = request.body;
     let options = { new: true };
     // update accuracy percentage
-    data.accuracy.percentage = Math.floor((data.accuracy.correct / (data.accuracy.correct + data.accuracy.incorrect)) * 100);
+    data.normalMode.accuracy.percentage = Math.floor((data.normalMode.accuracy.correct / (data.normalMode.accuracy.correct + data.normalMode.accuracy.incorrect)) * 100);
 
     const updateUser = await User.findByIdAndUpdate(id, data, options);
 
