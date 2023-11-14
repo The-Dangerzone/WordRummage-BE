@@ -38,8 +38,8 @@ app.get('/', (request, response) => {
 async function getLeaderboard(request, response, next) {
   try {
     // limit will set how many users are returned
-    let leaderboard = await User.find().sort({highScore:-1}).limit(10);
-    response.status(200).send(leaderboard);
+    let normalLeaderboard = await User.find().sort({ "normalMode.highScore" :-1}).limit(10);
+    response.status(200).send(normalLeaderboard);
   } catch (error) {
     console.log(error);
   }
