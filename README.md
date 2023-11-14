@@ -2,7 +2,7 @@
 
 [Repo](https://github.com/The-Dangerzone/WordRummage-FE) for React application.
 
-Deployed with [Render](https://wordrummage2.onrender.com)
+Deployed with Render
 
 Refactor members: Jordan Covington and Joe Davitt
 
