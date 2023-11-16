@@ -30,10 +30,21 @@ app.post('/user', verifyUser, postUser);
 app.put('/user/:id', updateDisplayName);
 app.put('/stats/:id', updateUserStats);
 app.get('/leaderboard', getLeaderboard);
+app.delete('/delete/:id', deleteUser)
 
 app.get('/', (request, response) => {
   response.send('Home Page!');
 });
+
+async function deleteUser(request, response, next) {
+  try {
+    let id = request.params.id;
+    await User.findByIdAndDelete(id);
+    response.status(200);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 async function getLeaderboard(request, response, next) {
   try {
